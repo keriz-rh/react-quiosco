@@ -13,7 +13,8 @@ export const useAuth = ({ middleware, url } = {}) => {
             if (!token) throw new Error("No token available");
     
             const { data } = await clienteAxios('/api/user', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers:
+                 { Authorization: `Bearer ${token}` }
             });
             return data;
         } catch (error) {
@@ -61,6 +62,15 @@ export const useAuth = ({ middleware, url } = {}) => {
         if (middleware === "guest" && url && user) {
             navigate(url, { replace: true });
         }
+        
+        if (middleware === "guest" && user && user.admin) {
+            navigate('/admin');
+        }
+
+        if (middleware === "admin" && user && !user.admin) {
+            navigate('/');
+        }
+
         if (middleware === "auth" && (error || !user)) {
             navigate("/auth/login", { replace: true });
         }

@@ -2,9 +2,9 @@ import { formatearDinero } from "../helpers"
 import useQuiosco from "../hooks/useQuiosco"
 
 
-export default function producto({ producto }) {
+export default function producto({ producto, buttonAgregar = false, buttonDisponible = false }) {
 
-    const{ handleClickModal, handleSetProducto } = useQuiosco();
+    const { handleClickModal, handleSetProducto, handleClickProductoAgotado } = useQuiosco();
     const { nombre, imagen, precio } = producto
 
     return (
@@ -20,16 +20,33 @@ export default function producto({ producto }) {
                 <p className="mt-5 font-black text-4xl text-amber-500">
                     {formatearDinero(precio)}</p>
 
-                <button
-                    type="button"
-                    className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3
+                {buttonAgregar && (
+
+
+                    <button
+                        type="button"
+                        className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3
                     uppercase font-bold"
-                    onClick={() => {handleClickModal();
-                        handleSetProducto(producto);
-                    }}
-                >
-                    Agregar
-                </button>
+                        onClick={() => {
+                            handleClickModal();
+                            handleSetProducto(producto);
+                        }}
+                    >
+                        Agregar
+                    </button>
+                )}
+                {buttonDisponible &&
+                    <button
+                        type="button"
+                        className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3
+                    uppercase font-bold"
+                        onClick={() => {
+                            handleClickProductoAgotado(producto.id)
+                        }}
+                    >
+                        Producto Agotado
+                    </button>
+                }
             </div>
 
         </div>
